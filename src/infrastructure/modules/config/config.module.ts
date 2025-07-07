@@ -1,5 +1,4 @@
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
+import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 
 @Module({
@@ -9,6 +8,5 @@ import { Module } from '@nestjs/common';
       envFilePath: '.env',
     }),
   ],
-  exports: [ConfigModule, ConfigService],
 })
 export class CustomConfigModule {}

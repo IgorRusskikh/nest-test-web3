@@ -37,9 +37,9 @@ export interface EvmTransactionResponse {
   from: string;
   value: string;
   input: string;
-  maxFeePerGas?: string;
-  maxPriorityFeePerGas?: string;
-  gasPrice?: string;
+  maxFeePerGas?: string | undefined;
+  maxPriorityFeePerGas?: string | undefined;
+  gasPrice?: string | undefined;
 }
 
 export type EvmRpcPayload = {

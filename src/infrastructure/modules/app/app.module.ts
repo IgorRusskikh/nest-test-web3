@@ -1,8 +1,10 @@
-import { CustomConfigModule } from '../config/config.module';
+import { CosmosRpcModule } from '@/infrastructure/modules/cosmos-rpc/cosmos-rpc.module';
+import { CustomConfigModule } from '@/infrastructure/modules/config/config.module';
+import { EvmRpcModule } from '@/infrastructure/modules/evm-rpc/evm-rpc.module';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [CustomConfigModule],
+  imports: [CustomConfigModule, EvmRpcModule, CosmosRpcModule],
   controllers: [],
   providers: [],
 })

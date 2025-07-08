@@ -3,7 +3,11 @@ import {
   CosmosRpcException,
   CosmosTransactionNotFoundException,
 } from '@exceptions';
-import { CosmosBlockResponse, CosmosTxResult } from '@types';
+import {
+  CosmosBlockResponse,
+  CosmosTxResult,
+  CosmosTxSearchResponse,
+} from '@types';
 import { Injectable, Logger } from '@nestjs/common';
 
 import { AxiosError } from 'axios';
@@ -48,13 +52,19 @@ export class CosmosRpcService implements ICosmosRpcService {
     this.logger.debug(`Запрос транзакции Cosmos по хешу: ${hash}`);
     try {
       const formattedHash = hash.startsWith('0x') ? hash.substring(2) : hash;
-      const result = await this.sendRequest<CosmosTxResult>(
-        `/tx?hash=0x${formattedHash}`,
+      const result = await this.sendRequest<CosmosTxSearchResponse>(
+        `/tx_search?query="tx.hash='${formattedHash}'"`,
       );
-      if (!result) {
+
+      if (!result || result.txs.length === 0) {
         throw new CosmosTransactionNotFoundException(hash);
       }
-      return result;
+
+      const transaction = result.txs[0];
+      if (!transaction) {
+        throw new CosmosTransactionNotFoundException(hash);
+      }
+      return transaction;
     } catch (error) {
       this.logger.error(
         `Ошибка при получении транзакции Cosmos ${hash}`,

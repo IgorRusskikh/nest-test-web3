@@ -1,5 +1,6 @@
 import { EvmBlockResponse, EvmTransactionResponse } from '@types';
 import { Injectable, Logger } from '@nestjs/common';
+import { mapBlock, mapTransaction } from '@mappers';
 
 import { EvmRpcService } from '@services';
 import { IEvmUsecase } from '@interfaces';
@@ -14,31 +15,13 @@ export class EvmUsecase implements IEvmUsecase {
     this.logger.debug(`Поиск блока EVM по высоте: ${height}`);
     const rawBlock = await this.evmRpcService.getBlockByNumber(height);
 
-    return {
-      height: parseInt(rawBlock.number, 16),
-      hash: rawBlock.hash,
-      parentHash: rawBlock.parentHash,
-      gasLimit: rawBlock.gasLimit,
-      gasUsed: rawBlock.gasUsed,
-      size: rawBlock.size,
-    };
+    return mapBlock(rawBlock);
   }
 
   async getTransaction(hash: string): Promise<EvmTransactionResponse> {
     this.logger.debug(`Поиск транзакции EVM по хешу: ${hash}`);
     const rawTx = await this.evmRpcService.getTransactionByHash(hash);
 
-    const response: EvmTransactionResponse = {
-      hash: rawTx.hash,
-      to: rawTx.to,
-      from: rawTx.from,
-      value: rawTx.value,
-      input: rawTx.input,
-      maxFeePerGas: rawTx.maxFeePerGas ?? null,
-      maxPriorityFeePerGas: rawTx.maxPriorityFeePerGas ?? null,
-      gasPrice: rawTx.gasPrice ?? null,
-    };
-
-    return response;
+    return mapTransaction(rawTx);
   }
 }

@@ -74,3 +74,8 @@ export interface AppCosmosTransaction {
   fee: { denom: string; amount: string }[];
   sender: string;
 }
+
+export interface CosmosTxSearchResponse {
+  txs: CosmosTxResult[];
+  total_count: string;
+}

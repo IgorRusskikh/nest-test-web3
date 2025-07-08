@@ -28,15 +28,17 @@ export class EvmUsecase implements IEvmUsecase {
     this.logger.debug(`Поиск транзакции EVM по хешу: ${hash}`);
     const rawTx = await this.evmRpcService.getTransactionByHash(hash);
 
-    return {
+    const response: EvmTransactionResponse = {
       hash: rawTx.hash,
       to: rawTx.to,
       from: rawTx.from,
       value: rawTx.value,
       input: rawTx.input,
-      maxFeePerGas: rawTx.maxFeePerGas,
-      maxPriorityFeePerGas: rawTx.maxPriorityFeePerGas,
-      gasPrice: rawTx.gasPrice,
+      maxFeePerGas: rawTx.maxFeePerGas ?? null,
+      maxPriorityFeePerGas: rawTx.maxPriorityFeePerGas ?? null,
+      gasPrice: rawTx.gasPrice ?? null,
     };
+
+    return response;
   }
 }

@@ -48,7 +48,9 @@
       "@controllers": ["controllers/index"],
       "@/common/*": ["common/*"],
       "@/exceptions/*": ["app/exceptions/*"],
-      "@exceptions": ["app/exceptions/index"]
+      "@exceptions": ["app/exceptions/index"],
+      "@/mappers/*": ["infrastructure/common/mappers/*"],
+      "@mappers": ["infrastructure/common/mappers/index"]
     }
   }
 }

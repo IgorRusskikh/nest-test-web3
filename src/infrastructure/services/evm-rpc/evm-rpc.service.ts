@@ -4,16 +4,15 @@ import {
   EvmRpcException,
   EvmTransactionNotFoundException,
 } from '@exceptions';
-import { Injectable, Logger } from '@nestjs/common';
 
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { IEvmRpcService } from '@/interfaces/services/evm-rpc.interface';
+import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class EvmRpcService implements IEvmRpcService {
-  private readonly logger = new Logger(EvmRpcService.name);
   private readonly rpcUrl: string;
 
   private static readonly JSON_RPC_VERSION = '2.0';
@@ -33,8 +32,6 @@ export class EvmRpcService implements IEvmRpcService {
   }
 
   async getBlockByNumber(height: number): Promise<EvmBlock> {
-    this.logger.debug(`Запрос блока по высоте: ${height}`);
-
     const hexHeight = '0x' + height.toString(16);
 
     try {
@@ -46,16 +43,14 @@ export class EvmRpcService implements IEvmRpcService {
       if (!result) {
         throw new EvmBlockNotFoundException(height);
       }
+
       return result;
     } catch (error) {
-      this.logger.error(`Ошибка при получении блока ${height}:`, error);
       throw error;
     }
   }
 
   async getTransactionByHash(hash: string): Promise<EvmTransaction> {
-    this.logger.debug(`Запрос транзакции по хешу: ${hash}`);
-
     try {
       const result = await this.sendRpcRequest<EvmTransaction>(
         'eth_getTransactionByHash',
@@ -68,7 +63,6 @@ export class EvmRpcService implements IEvmRpcService {
 
       return result;
     } catch (error) {
-      this.logger.error(`Ошибка при получении транзакции ${hash}:`, error);
       throw error;
     }
   }

@@ -1,6 +1,6 @@
-import { CosmosController } from '@/infrastructure/controllers/cosmos/cosmos.controller';
-import { CosmosRpcService } from '../../services/cosmos-rpc/cosmos-rpc.service';
-import { CosmosUsecase } from '@/app/usecases/cosmos/cosmos.usecase';
+import { CosmosController } from '@controllers';
+import { CosmosRpcService } from '@services';
+import { CosmosUsecase } from '@usecases';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 
